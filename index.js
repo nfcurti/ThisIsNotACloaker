@@ -99,7 +99,7 @@ app.post("/user", (req, res) => {
   murl = req.body.moneypage_file;
   surl = req.body.safepage_url;
 
-  exec('vercel', (err, stdout, stderr) => {
+  exec('now', (err, stdout, stderr) => {
     if (err) {
         console.log(`error: ${err.message}`);
         return;
