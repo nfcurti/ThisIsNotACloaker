@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Cloaker Setup</title>
+  </head>
+  <body class="container">
+  	<form method="post" action="/user">
+	  	<h1 style="text-align: center;margin-top: 2em">Cloaker Deployment</h1>
+	  	<div class="container" style="width: 40em;margin-top: 2em">
+	  		<label for="basic-url">Desired Zeit Now URL</label>
+	    <div class="input-group mb-3">
+		  <input name="domain" type="text" class="form-control" placeholder="Domain" aria-label="Domain" aria-describedby="basic-addon2">
+		  <div class="input-group-append">
+		    <span class="input-group-text" id="basic-addon2">.now.sh</span>
+		  </div>
+		</div>
+	  	</div>
+	  	<div class="container" style="width: 40em;margin-top: 2em">
+	  		<label for="basic-url">Money Page</label>
+	    <div class="input-group mb-3">
+		  <input name="moneypage_file" type="text" class="form-control" placeholder="What's your filename?" aria-label="What's your filename?" aria-describedby="basic-addon2" value="<%=murl%>">
+		  <div class="input-group-append">
+		    <span class="input-group-text" id="basic-addon2">.ejs</span>
+		  </div>
+		</div>
+	  	</div>
+	  	<div class="container" style="width: 40em;margin-top: 2em">
+	  		<label for="basic-url">Safe Page</label>
+	    <div class="input-group mb-3">
+		  <input  name="safepage_url" type="text" class="form-control" placeholder="Proxied Page" aria-label="Proxied Page" aria-describedby="basic-addon2" value="<%=surl%>">
+		  
+		</div>
+	  	</div>
+	  	<button class="btn btn-primary" type="submit" style="width: 50em;display: block; margin: 0 auto;">Deploy</button>
+  	</form>
+  	<form method="post" action="/blackl">
+	  	<h1 style="text-align: center;margin-top: 2em">Whitelist (This domain)</h1>
+	  	
+	  	<div class="container" style="width: 40em;margin-top: 2em">
+	  		<label for="basic-url">Allowed ISPs</label>
+	    <div class="input-group mb-3">
+		  <input  name="bisp" type="text" class="form-control" placeholder="Blocked ISPs" aria-label="Blocked ISPs" aria-describedby="basic-addon2" value="<%=blocked_isp%>">
+		  
+		</div>
+	  	</div>
+	  	<div class="container" style="width: 40em;margin-top: 2em">
+	  		<label for="basic-url">Allowed GEOs</label>
+	    <div class="input-group mb-3">
+		  <input  name="bgeo" type="text" class="form-control" placeholder="Blocked GEOs" aria-label="Blocked GEOs" aria-describedby="basic-addon2" value="<%=blocked_geo%>">
+		  
+		</div>
+	  	</div>
+	  	<button class="btn btn-danger" type="submit" style="width: 50em;display: block; margin: 0 auto;margin-bottom: 2em">Save Changes</button>
+  	</form>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

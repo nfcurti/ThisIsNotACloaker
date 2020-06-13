@@ -1,0 +1,35 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb-base"],
+  "env": {
+    "node": true,
+    "jest": true
+  },
+  "plugins": ["promise"],
+  "rules": {
+    "arrow-parens": ["off"],
+    "no-underscore-dangle": "off",
+    "generator-star-spacing": "off",
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "promise/param-names": "error",
+    "promise/always-return": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-native": "off",
+    "class-methods-use-this": "off",
+    "function-paren-newline": "off",
+    "object-curly-newline": "off",
+    "max-len": ["error", { "code": 80 }],
+    "comma-dangle": [
+      "error",
+      {
+        "functions": "never",
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline"
+      }
+    ]
+  }
+}
