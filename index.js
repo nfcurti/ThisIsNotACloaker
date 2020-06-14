@@ -94,27 +94,9 @@ app.get("/setup", (req, res) => {
 });
 
 app.post("/user", (req, res) => {
-  console.log('STARTING DEPLOY')
-
-  murl = req.body.moneypage_file;
-  surl = req.body.safepage_url;
-
-  exec('now', (err, stdout, stderr) => {
-    if (err) {
-        console.log(`error: ${err.message}`);
-        return;
-    }
-    if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-    }
-    console.log(`stdout: ${stdout}`);
-
-  res.send({ status: "Domain created: " });
-})
-
-
-
+	  murl = req.body.moneypage_file;
+	  surl = req.body.safepage_url;
+  res.send({ status: "Updated correctly. Check safe/money page to validate. " });
 });
 
 app.post("/blackl", (req, res) => {
