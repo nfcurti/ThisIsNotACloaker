@@ -81,11 +81,7 @@ app.get("/", (req, res, next) => {
 				res.status(200).render(surl);
 				return 	next();
 			}
-	  
-	  
 	});
-	
-	
 });
 
 // Mock APIs
@@ -101,12 +97,8 @@ app.post("/user", (req, res) => {
 
 app.post("/blackl", (req, res) => {
   console.log(req.body)
-
   blocked_isp = req.body.bisp;
   blocked_geo = req.body.bgeo;
-
-
-
   res.send({ status: "Your domain's blacklist has been updated" });
 });
 // Listen on port 5000
