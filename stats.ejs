@@ -16,25 +16,92 @@
       <h5 style="margin-left: 0.3em;padding-top: 1em;;margin-bottom: 1em">Total Hits: <%=hits.length%> | Total Safe Page: <%=safe.length%></h5>
       <h6 style="margin-left: 0.5em;margin-bottom: 1em">Allowed ISPs: <%=blocked_isp%></h6>
       <h6 style="margin-left: 0.5em;margin-bottom: 1em">Allowed GEOs: <%=blocked_geo%></h6>
+      <h6 style="margin-left: 0.5em;margin-bottom: 1em">
+        Blacklist:<%blackl_isp.forEach(i => {%>
+          <form id="req<%=i%>" method="GET" action="/bl" style="">
+              <input id="av<%=i%>" type="hidden" name="isp" value="<%=i%>" /> 
+            </form>
+          <p onclick="document.getElementById('req<%=i%>').submit()" style="cursor: pointer"><%=i%></p>
+          <%})%>
+        </h6>
       <div class="container">
         
     </div>
   </div>
+
+  <h5 style="margin-left: 0.3em;padding-top: 1em;;margin-bottom: 1em">Today Data</h5>
+    <table class="table" style="width: 60em !important">
+      <table class="table" style="">
+        <thead>
+          <tr>
+            
+          <th scope="col">ISP</th>
+          <th scope="col">Today</th>
+          <th>Allow</th>
+          <th data-toggle="tooltip" data-placement="top" title="Click on the ISP to see them again">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+            <%today.forEach(a=>{%>
+            <%if(blackl_isp.includes(a.isp)==false) {%> 
+          <tr>
+            <td><%=a.isp%></td>
+            <td><%=a['COUNT(*)']%></td>
+            <td  id="sr" style="cursor: pointer">
+
+            <form id="reques" method="GET" action="/wl" style="">
+              <input id="avert" type="hidden" name="isp" value="<%=a.isp%>" /> 
+            </form>
+
+            <%if (blocked_isp.includes(a.isp) == true){%><p onclick="document.getElementById('avert').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('reques').submit()">Remove</p><%}else{%><p onclick="document.getElementById('avert').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('reques').submit()">Add</p><%}%>
+              
+          </td>
+          <td  id="sr2" style="cursor: pointer">
+
+            <form id="requesa" method="GET" action="/bl" style="">
+              <input id="avert2" type="hidden" name="isp" value="<%=a.isp%>" /> 
+            </form>
+
+            <%if (blackl_isp.includes(a.isp) == true){%><p onclick="document.getElementById('avert2').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('requesa').submit()">Show ISP</p><%}else{%><p onclick="document.getElementById('avert2').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('requesa').submit()">Hide ISP</p><%}%>
+              
+          </td>
+          </tr>
+          <%}})%>
+        </tbody>
+      </table>
+  <h5 style="margin-left: 0.3em;padding-top: 1em;;margin-bottom: 1em">Historic Data</h5>
     <table class="table" style="width: 60em !important">
       <thead>
         <tr>
           <th scope="col">ISP</th>
-          <th scope="col">Today</th>
-          <th scope="col" style="width: 10em">This Week</th>
+          <th scope="col">This Week</th>
+          <th scope="col" style="width: 10em">Last Month</th>
           <th scope="col" style="width: 10em">This Month</th>
           <th scope="col">Total</th>
-          <th>Whitelist</th>
+          <th>Allow</th>
+          <th data-toggle="tooltip" data-placement="top" title="Click on the ISP to see them again">Actions</th>
+          <script type="text/javascript">
+            $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
+          </script>
         </tr>
       </thead>
       <tbody>
         <% analytic.forEach( a => { %>
+       <%if(blackl_isp.includes(a.isp)==false) {%> 
         <tr>
           <td><p id="<%=a.isp%>"><%=a.isp%></p></td>
+          
+          <%thisMonth.forEach(tm => {%>
+          
+            
+
+            <%if(tm.isp === a.isp){%>
+              <td><%=tm['COUNT(*)']%></td> 
+            <%}%>
+
+          <% }) %>
           <td>0</td>
           <%thisMonth.forEach(tm => {%>
           
@@ -43,13 +110,7 @@
             <%}%>
 
           <% }) %>
-          <%thisMonth.forEach(tm => {%>
-          
-            <%if(tm.isp === a.isp){%>
-              <td><%=tm['COUNT(*)']%></td> 
-            <%}%>
 
-          <% }) %>
           <td><%=a['COUNT(*)']%></td>
           <td  id="sr" style="cursor: pointer">
 
@@ -60,8 +121,20 @@
             <%if (blocked_isp.includes(a.isp) == true){%><p onclick="document.getElementById('avert').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('reques').submit()">Remove</p><%}else{%><p onclick="document.getElementById('avert').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('reques').submit()">Add</p><%}%>
               
           </td>
+          <td  id="sr2" style="cursor: pointer">
+
+            <form id="requesa" method="GET" action="/bl" style="">
+              <input id="avert2" type="hidden" name="isp" value="<%=a.isp%>" /> 
+            </form>
+
+            <%if (blackl_isp.includes(a.isp) == true){%><p onclick="document.getElementById('avert2').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('requesa').submit()">Show ISP</p><%}else{%><p onclick="document.getElementById('avert2').value = document.getElementById('<%=a.isp%>').innerHTML; document.getElementById('requesa').submit()">Hide ISP</p><%}%>
+              
+          </td>
           
         </tr>
+
+      <%}%>
+        
         <% }) %>
       </tbody>
     </table>

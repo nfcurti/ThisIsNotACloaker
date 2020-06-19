@@ -12,8 +12,9 @@ app.set('views', __dirname);
 app.set('view engine', 'ejs');
 app.use(express.static('dist'))
 app.use(express.static(__dirname));
-var blocked_isp = ['Vodafone', 'TIM']
+var blocked_isp = []
 var blocked_geo = ['Italy']
+var blackl_isp = []
 
 const mysql = require('serverless-mysql')
 
@@ -141,7 +142,7 @@ const thisMonth = await db.query(`SELECT isp, COUNT(*) FROM cloaker  WHERE date 
 const today = await db.query(`SELECT isp, COUNT(*) FROM cloaker  WHERE date LIKE '%${day}%' GROUP BY isp`);
 
 console.log(today[0].isp)
-	res.status(200).render('stats', {today:today,thisMonth:thisMonth,analytic:analytic,safe:safe,blocked_isp:blocked_isp,blocked_geo:blocked_geo, hits:users});
+	res.status(200).render('stats', {blackl_isp:blackl_isp,today:today,thisMonth:thisMonth,analytic:analytic,safe:safe,blocked_isp:blocked_isp,blocked_geo:blocked_geo, hits:users});
 	
 });
 
@@ -159,6 +160,18 @@ app.get("/wl", (req, res) => {
 	  }else{
 	  	console.log(req.query.isp)
 	  	blocked_isp.push(req.query.isp.replace("amp;", ""))
+	  }
+  	 res.redirect('/stats');
+});
+
+app.get("/bl", (req, res) => {
+	  
+
+	  if(blackl_isp.includes(req.query.isp)==true){
+	  	blackl_isp.splice(blackl_isp.indexOf(req.query.isp), 1)
+	  }else{
+	  	console.log(req.query.isp)
+	  	blackl_isp.push(req.query.isp)
 	  }
   	 res.redirect('/stats');
 });

@@ -13,6 +13,11 @@
       "methods": ["GET"]
     },
     {
+      "src": "/bl",
+      "dest": "/index.js",
+      "methods": ["GET"]
+    },
+    {
       "src": "/setup",
       "dest": "/index.js",
       "methods": ["GET"]
