@@ -15,7 +15,8 @@ app.use(express.static(__dirname));
 var blocked_isp = []
 var blocked_geo = ['Italy']
 var blackl_isp = []
-
+var koa = require('koa');
+var proxy = require('koa-proxy');
 const mysql = require('serverless-mysql')
 
 
@@ -33,6 +34,9 @@ const db = mysql({
     password: '862554zZ',
   },
 })
+
+
+
 app.get("/", (req, res, next) => {
 
 console.log("IP: "+process.env.MYSQL_HOST)
