@@ -110,7 +110,13 @@ console.log("IP: "+process.env.MYSQL_HOST)
 			}
 			else
 			{
-				res.status(200).render(surl);
+				request({uri: surl}, 
+								    async function(error, response, body) {
+								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+									  
+									res.status(200).write(body);
+									res.end();
+								  });
 				return 	next();
 			}
 	});
