@@ -69,8 +69,8 @@ console.log("IP: "+process.env.MYSQL_HOST)
 									request({uri: surl}, 
 								    async function(error, response, body) {
 								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-									  
-									res.status(200).write(body);
+									
+									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
 									res.end();
 								  });
 					    	} else{
@@ -79,16 +79,15 @@ console.log("IP: "+process.env.MYSQL_HOST)
 								    async function(error, response, body) {
 								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
-									res.status(200).write(body);
+									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
 									res.end();
 								  });
 					    		}else{
-					    		request({uri: murl}, 
+					    		request({uri: surl}, 
 								    async function(error, response, body) {
-									  const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-									  res.status(200).redirect(response.body);
-									//res.status(200).redirect(response.body);
-
+								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+									  
+									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
 									res.end();
 								  });
 								
@@ -99,12 +98,11 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    var isp = JSON.parse(data).isp || "empty"
 					    var geo = JSON.parse(data).country || "empty"
 					    console.log(date)
-					    		request({uri: murl}, 
+					    		request({uri: surl}, 
 								    async function(error, response, body) {
-									  const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-									  res.status(200).redirect(response.body);
-									//res.status(200).redirect(response.body);
-
+								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+									  
+									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
 									res.end();
 								  });
 					    }
@@ -114,7 +112,8 @@ console.log("IP: "+process.env.MYSQL_HOST)
 			}
 			else
 			{
-				request({uri: surl}, 
+				request(
+					{uri: surl}, 
 								    async function(error, response, body) {
 								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
