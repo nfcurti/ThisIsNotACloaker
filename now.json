@@ -8,6 +8,10 @@
       "methods": ["GET"]
     },
     {
+      "src": "/a",
+      "dest": "/index.js"
+    },
+    {
       "src": "/wl",
       "dest": "/index.js",
       "methods": ["GET"]

