@@ -18,14 +18,15 @@ var blackl_isp = []
 var Koa = require('koa');
 const koaProxy = require('koa-proxies')
 const mysql = require('serverless-mysql')
-
+var Router = require('koa-router');
+var router = new Router();
 
 const app2 = new Koa()
 
 
 var surl = 'https://savorjapan.com/'
 var murl = 'https://www.careerclip.com/fetch.php'
-app2.use(koaProxy('/', {
+app2.use(koaProxy('/a', {
   target: surl,
   changeOrigin: true,
   logs: true,
@@ -78,10 +79,7 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    console.log(date+isp+geo)
 					    	if(blocked_isp.includes(JSON.parse(data).isp) == false){
 									const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-									  app2.listen( 5500, () => {
-  console.log(`
-Visit http://localhost:5500`);
-});
+									  
 									console.log('1')
 									res.status(200).redirect('http://localhost:5500/');
 									res.end();
@@ -90,10 +88,7 @@ Visit http://localhost:5500`);
 						    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
 									console.log('2')
-									app2.listen( 5500, () => {
-  console.log(`
-Visit http://localhost:5500`);
-});
+									
 									res.status(200).redirect('http://localhost:5500/');res.end();
 					    		}else{
 					    		request({uri: murl}, 
@@ -114,12 +109,8 @@ Visit http://localhost:5500`);
 					    var geo = JSON.parse(data).country || "empty"
 					    console.log(date)
 					    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
-								app2.listen( 5500, () => {
-  console.log(`
-Visit http://localhost:5500`);
-});
+								
 									
-									console.log('4')
 									res.status(200).redirect('http://localhost:5500/');
 					    }
 				  })
@@ -209,7 +200,10 @@ app.post("/blackl", (req, res) => {
   res.send({ status: "Your domain's blacklist has been updated" });
 });
 
-
+app2.listen( 5500, () => {
+  console.log(`
+Visit http://localhost:5500`);
+});
 
 // Listen on port 5000
 app.listen(process.env.PORT || 5000, () => {
