@@ -20,15 +20,19 @@ const koaProxy = require('koa-proxy');
 const mysql = require('serverless-mysql')
 var Router = require('koa-router');
 var router = new Router();
-
+var URL = require('url').URL;
 const app2 = new Koa()
 
 
 var surl = 'https://www.savorjapan.com/'
 var murl = 'https://www.careerclip.com/fetch.php'
-app2.use(koaProxy({
-  host: surl
-}));
+app2.use(koaProxy('/', {
+  target: surl,
+  changeOrigin: true,
+  logs: true,
+  autoRewrite: true
+
+}))
 
 
 app.use(requestIp.mw())

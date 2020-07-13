@@ -1,0 +1,6 @@
+component: express
+name: express-starter
+inputs:
+  src: ./
+org: nfcurti
+app: cloaker
