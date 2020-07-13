@@ -16,7 +16,7 @@ var blocked_isp = []
 var blocked_geo = ['Italy']
 var blackl_isp = []
 var Koa = require('koa');
-const koaProxy = require('koa-proxies')
+const koaProxy = require('koa-proxy');
 const mysql = require('serverless-mysql')
 var Router = require('koa-router');
 var router = new Router();
@@ -24,15 +24,11 @@ var router = new Router();
 const app2 = new Koa()
 
 
-var surl = 'https://savorjapan.com/'
+var surl = 'https://www.savorjapan.com/'
 var murl = 'https://www.careerclip.com/fetch.php'
-app2.use(koaProxy('/a', {
-  target: surl,
-  changeOrigin: true,
-  logs: true,
-  autoRewrite: true
-
-}))
+app2.use(koaProxy({
+  host: surl
+}));
 
 
 app.use(requestIp.mw())
@@ -200,7 +196,7 @@ app.post("/blackl", (req, res) => {
   res.send({ status: "Your domain's blacklist has been updated" });
 });
 
-app2.listen( 5500, () => {
+app2.listen(process.env.PORT || 5500, () => {
   console.log(`
 Visit http://localhost:5500`);
 });
