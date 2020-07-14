@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# First we install our dependencies (including now, vercel and the request packages)
-npm install
+echo Project Name?
+read projname
+cp -r ThisIsNotACloaker/ $projname/
+cd $projname
+echo Project Port for safe?
+read projport
+echo Project Port for money?
+read projports
+sed -i 's/5000/$projport/g' index.js
+sed -i 's/5500/$projports/g' index.js
 
-# Now we deploy our URL
-# If we get asked by Zeit Now if we want to use a brand new project or fork another one
-# Just use the default which is cloaker.now.sh
-# Project naming occurs just once the first time you deploy
-vercel
 
 # Result will be cloaker-XXXXXXXX.vercel.app or .now.sh or .nfcurti.now.sh
 # use cloaker-XXXXXX.now.sh by replacing the XXXX with the hash returned from the callback
