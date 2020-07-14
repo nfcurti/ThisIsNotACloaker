@@ -77,7 +77,7 @@ console.log("IP: "+process.env.MYSQL_HOST)
 									const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
 									console.log('1')
-									res.status(200).redirect('http://localhost:5500/');
+									res.status(200).redirect('http://46.101.236.36:5500/');
 									res.end();
 					    	} else{
 					    		if(blocked_geo.includes(JSON.parse(data).country) == false){
@@ -85,7 +85,7 @@ console.log("IP: "+process.env.MYSQL_HOST)
 									  
 									console.log('2')
 									
-									res.status(200).redirect('http://localhost:5500/');res.end();
+									res.status(200).redirect('http://46.101.236.36:5500/');res.end();
 					    		}else{
 					    		request({uri: murl}, 
 								    async function(error, response, body) {
@@ -107,7 +107,7 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 								
 									console.log('4')
-									res.status(200).redirect('http://localhost:5500/');
+									res.status(200).redirect('http://46.101.236.36:5500/');
 					    }
 				  })
 				}).on('error', function(e) {  console.log(e) ;});
