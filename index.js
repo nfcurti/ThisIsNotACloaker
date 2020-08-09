@@ -36,10 +36,10 @@ app.use(requestIp.mw())
 
 const db = mysql({
   config: {
-  	host:'nfcurti@cloaker.mysql.database.azure.com',
-    database: 'quickstartdb',
-    user: 'nfcurti@cloaker',
-    password: '862554zZ',
+  	host:'198.211.123.208',
+    database: 'domainsites',
+    user: 'sites',
+    password: 'spast123',
   },
 })
 
