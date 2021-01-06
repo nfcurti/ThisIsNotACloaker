@@ -10,7 +10,7 @@
   "author": "nfcurti",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "catch-async": "^1.0.1",
     "ejs": "^3.1.3",
     "express": "^4.17.1",
